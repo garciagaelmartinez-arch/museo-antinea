@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museo de Raíces Vivas de México</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-card: rgba(20, 20, 20, 0.85);
+            --gold: #D4AF37;
+            --green: #006847;
+            --red: #CE1126;
+            --text-light: #f4f4f4;
+            --text-muted: #aaaaaa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #0a0a0a 70%);
+            background-attachment: fixed;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center;
+            padding: 4rem 2rem 2rem;
+            position: relative;
+            border-bottom: 2px solid var(--gold);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0));
+        }
+
+        header::before {
+            content: '🇲🇽';
+            font-size: 3rem;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.3;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        .guiding-question {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto;
+            border-left: 3px solid var(--red);
+            border-right: 3px solid var(--green);
+            padding: 0 1rem;
+        }
+
+        /* --- NAVEGACIÓN --- */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid #333;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--gold);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px var(--gold);
+            transform: translateY(-3px);
+        }
+
+        /* --- SALAS --- */
+        .sala {
+            display: none;
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .sala.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sala-title {
+            font-size: 2.5rem;
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .sala-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--green), var(--gold), var(--red));
+            margin: 1rem auto 0;
+        }
+
+        /* --- TARJETAS INTERACTIVAS --- */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 20px rgba(212, 175, 55, 0.2);
+            border-color: var(--gold);
+        }
+
+        .card h3 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card ul {
+            list-style: none;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .card ul li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+
+        .card ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--red);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            filter: grayscale(80%) sepia(20%);
+            transition: filter 0.4s ease;
+        }
+
+        .card:hover .card-img {
+            filter: grayscale(0%) sepia(0%);
+        }
+
+        /* --- LÍNEA DE TIEMPO (SALA 2) --- */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--green), var(--red));
+            top: 0; bottom: 0; left: 50%;
+            margin-left: -2px;
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+
+        .timeline-item.left { left: 0; }
+        .timeline-item.right { left: 50%; }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px; height: 20px;
+            right: -10px; top: 20px;
+            background-color: var(--bg-dark);
+            border: 4px solid var(--gold);
+            border-radius: 50%;
+            z-index: 1;
+            box-shadow: 0 0 10px var(--gold);
+        }
+
+        .timeline-item.right::after {
+            left: -10px;
+        }
+
+        .timeline-content {
+            padding: 20px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+
+        .timeline-content:hover {
+            border-color: var(--gold);
+            transform: scale(1.02);
+        }
+
+        .timeline-content h3 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        /* --- TABLA COMPARATIVA (SALA 3) --- */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .comparison-table th {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+        }
+
+        .comparison-table td:first-child {
+            font-weight: 600;
+            color: var(--text-light);
+            background: rgba(0,0,0,0.3);
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        /* --- SALA 4 (RÚBRICA) --- */
+        .rubric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .rubric-item {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--green);
+        }
+
+        .rubric-item h4 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .rubric-item p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .credits {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(0, 104, 71, 0.1);
+            border: 1px dashed var(--green);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid #333;
+            margin-top: 4rem;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            .timeline::after { left: 31px; }
+            .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
+            .timeline-item.right { left: 0%; }
+            .timeline-item.left::after, .timeline-item.right::after { left: 21px; }
+            .comparison-table { display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Museo de Raíces Vivas de México</h1>
+        <p class="guiding-question">¿Cómo se entrelazan las causas, las invasiones y los proyectos de nación para forjar la identidad y el México actual?</p>
+    </header>
+
+    <nav>
+        <button class="nav-btn active" onclick="openSala('sala1', this)">Sala 1: El Despertar</button>
+        <button class="nav-btn" onclick="openSala('sala2', this)">Sala 2: Defensa de la Patria</button>
+        <button class="nav-btn" onclick="openSala('sala3', this)">Sala 3: Proyectos de Nación</button>
+        <button class="nav-btn" onclick="openSala('sala4', this)">Sala 4: Integración y Coevaluación</button>
+    </nav>
+
+    <!-- SALA 1: CAUSAS DE LA INDEPENDENCIA -->
+    <section id="sala1" class="sala active">
+        <h2 class="sala-title">Sala 1: El Despertar de una Nación (1810-1821)</h2>
+        <div class="grid-cards">
+            <div class="card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Miguel_Hidalgo_y_Costilla.png/800px-Miguel_Hidalgo_y_Costilla.png" alt="Miguel Hidalgo" class="card-img">
+                <h3>🪙 Causas Económicas</h3>
+                <ul>
+                    <li>Altos impuestos impuestos por España.</li>
+                    <li>Desigualdad económica entre españoles y criollos.</li>
+                    <li>Restricciones al comercio de Nueva España.</li>
+                    <li>Explotación de recursos y trabajadores.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Retrato_de_Jos%C3%A9_Mar%C3%ADa_Morelos.png/800px-Retrato_de_Jos%C3%A9_Mar%C3%ADa_Morelos.png" alt="José María Morelos" class="card-img">
+                <h3>👥 Causas Sociales</h3>
+                <ul>
+                    <li>Desigualdad entre los grupos sociales.</li>
+                    <li>Los peninsulares ocupaban los principales cargos.</li>
+                    <li>Los criollos tenían menos oportunidades políticas.</li>
+                    <li>Indígenas, mestizos y castas sufrían explotación y abusos.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Napoleon_Bonaparte.jpg/800px-Napoleon_Bonaparte.jpg" alt="Napoleón Bonaparte" class="card-img">
+                <h3>🏛️ Causas Políticas e Influencias</h3>
+                <ul>
+                    <li>Los criollos buscaban mayor participación en el gobierno.</li>
+                    <li>Invasión de Francia a España en 1808.</li>
+                    <li>Crisis de la monarquía española.</li>
+                    <li>Influencia de las ideas de libertad e igualdad (Ilustración).</li>
+                    <li>Independencia de las Trece Colonias y Revolución Francesa.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SALA 2: INVASIONES -->
+    <section id="sala2" class="sala">
+        <h2 class="sala-title">Sala 2: Defensa de la Soberanía (Invasiones a México)</h2>
+        <div class="timeline">
+            <!-- Invasión Estadounidense -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <h3>🇺🇸 Invasión Estadounidense (1846-1848)</h3>
+                    <p><strong>Causas:</strong> Doctrina del Destino Manifiesto, inestabilidad política en México, intereses económicos de EE.UU., y disputa por Texas tras su anexión.</p>
+                    <p><strong>Efectos:</strong> México pierde más de 2.3 millones km² (Tratado de Guadalupe Hidalgo). Debilitamiento del gobierno, crisis política, pérdidas económicas y surgimiento del nacionalismo.</p>
+                    <a href="https://es.wikipedia.org/wiki/Intervenci%C3%B3n_estadounidense_en_M%C3%A9xico" target="_blank" style="color: var(--gold); text-decoration: none; font-size: 0.8rem;">🔗 Ver más en Wikipedia</a>
+                </div>
+            </div>
+            <!-- Intervención Francesa -->
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <h3>🇫🇷 Intervención Francesa (1862-1867)</h3>
+                    <p><strong>Causas:</strong> Suspensión del pago de deuda externa por Juárez (1861), conflicto entre liberales y conservadores, intereses económicos de Francia, España e Inglaterra, y ambición de Napoleón III.</p>
+                    <p><strong>Efectos:</strong> Ocupación francesa y establecimiento del Segundo Imperio Mexicano (Maximiliano). Restauración de la República (1867). Altos costos de guerra, resistencia popular (Batalla de Puebla 5 de mayo de 1862) y fortalecimiento del liberalismo.</p>
+                    <a href="https://es.wikipedia.org/wiki/Segunda_intervenci%C3%B3n_francesa_en_M%C3%A9xico" target="_blank" style="color: var(--gold); text-decoration: none; font-size: 0.8rem;">🔗 Ver más en Wikipedia</a>
+                </div>
+            </div>
+        </div>
+        <p style="text-align: center; margin-top: 2rem; color: var(--text-muted); font-style: italic;">
+            Conclusión: Ambas invasiones debilitaron a México territorial y económicamente, pero fortalecieron el nacionalismo y la consolidación de la República.
+        </p>
+    </section>
+
+    <!-- SALA 3: PROYECTOS DE EMANCIPACIÓN -->
+    <section id="sala3" class="sala">
+        <h2 class="sala-title">Sala 3: Tres Visiones, Una Nación</h2>
+        <div style="overflow-x: auto;">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Hidalgo (1810-1811)</th>
+                        <th>Morelos (1813-1814)</th>
+                        <th>Iturbide (1821)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Líder</td>
+                        <td>Miguel Hidalgo y Costilla</td>
+                        <td>José María Morelos y Pavón</td>
+                        <td>Agustín de Iturbide</td>
+                    </tr>
+                    <tr>
+                        <td>Documento base</td>
+                        <td>Bando de Guadalajara (1810) • Grito de Dolores</td>
+                        <td>Sentimientos de la Nación (1813)</td>
+                        <td>Plan de Iguala (1821)</td>
+                    </tr>
+                    <tr>
+                        <td>Objetivo político</td>
+                        <td>Independencia total de España • Fin del dominio colonial • Gobierno popular e igualitario</td>
+                        <td>Independencia y soberanía • Instaurar una República • Igualdad ante la ley y justicia social</td>
+                        <td>Independencia mediante monarquía constitucional • Unión de americanos y europeos</td>
+                    </tr>
+                    <tr>
+                        <td>Propuesta social</td>
+                        <td>Abolición de la esclavitud • Reparto de tierras a indígenas y campesinos • Igualdad para las castas</td>
+                        <td>Abolición de castas y esclavitud • Distribución equitativa de tierras • Derechos iguales</td>
+                        <td>Unión de razas sin distinción • Conservación del orden social • Protección a privilegios de la Iglesia y élite</td>
+                    </tr>
+                    <tr>
+                        <td>Propuesta económica</td>
+                        <td>Reducción de tributos • Supresión de monopolios • Fomento a la agricultura campesina</td>
+                        <td>Eliminación de monopolios • Impulso al comercio local • Reparto equitativo de bienes</td>
+                        <td>Libre comercio • Protección a la propiedad privada • Continuidad de actividades productivas</td>
+                    </tr>
+                    <tr>
+                        <td>Religión</td>
+                        <td>Católica • Defensa de la religión católica</td>
+                        <td>Católica como única religión • Tolerancia religiosa dentro del catolicismo</td>
+                        <td>Católica como religión oficial y única • Protección total a la Iglesia católica</td>
+                    </tr>
+                    <tr>
+                        <td>Apoyo social</td>
+                        <td>Campesinos, indígenas y población rural del Bajío</td>
+                        <td>Campesinos y mestizos del sur • Insurgentes y tropas insurgentes</td>
+                        <td>Criollos, élite novohispana • Ejército realista • Clero y comerciantes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SALA 4: INTEGRACIÓN Y COEVALUACIÓN -->
+    <section id="sala4" class="sala">
+        <h2 class="sala-title">Sala 4: Integración y Coevaluación</h2>
+        
+        <div style="background: var(--bg-card); padding: 2rem; border-radius: 15px; border: 1px solid var(--gold); margin-bottom: 2rem;">
+            <h3 style="color: var(--gold); margin-bottom: 1rem;">🧩 Integración de las Progresiones</h3>
+            <p style="color: var(--text-muted); line-height: 1.6;">
+                Este museo integra las cuatro progresiones del parcial utilizando las tres infografías como pilares fundamentales:
+                <br><br>
+                <strong>Progresión 1 (Causas):</strong> Se aborda en la Sala 1, analizando el contexto económico, social y político que detonó el movimiento de 1810.
+                <br>
+                <strong>Progresión 2 (Desarrollo y Proyectos):</strong> Se profundiza en la Sala 3, comparando los ideales de Hidalgo, Morelos e Iturbide.
+                <br>
+                <strong>Progresión 3 (Consolidación y Defensa):</strong> Se explora en la Sala 2, con las invasiones extranjeras que pusieron a prueba la soberanía nacional.
+                <br>
+                <strong>Progresión 4 (Reflexión y Legado):</strong> Se sintetiza en esta Sala 4, respondiendo a la pregunta generadora y evaluando el impacto en el México actual.
+            </p>
+        </div>
+
+        <h3 style="color: var(--text-light); text-align: center; margin-bottom: 1rem;">📋 Panel de Coevaluación (Rúbrica)</h3>
+        <div class="rubric-grid">
+            <div class="rubric-item">
+                <h4>✅ Integración de las 4 Progresiones</h4>
+                <p>El museo integra de forma clara y equilibrada las cuatro progresiones trabajadas, conectando causas, proyectos, invasiones y legado.</p>
+            </div>
+            <div class="rubric-item">
+                <h4>✅ Coherencia Narrativa</h4>
+                <p>La narrativa responde con claridad a la pregunta generadora: ¿Cómo se entrelazan los eventos para forjar la identidad mexicana?</p>
+            </div>
+            <div class="rubric-item">
+                <h4>✅ Recursos Multimedia</h4>
+                <p>Incorpora imágenes históricas, retratos, mapas mentales y enlaces externos pertinentes y bien integrados en cada sala.</p>
+            </div>
+            <div class="rubric-item">
+                <h4>✅ Trabajo Colaborativo</h4>
+                <p>El producto final evidencia la participación equitativa de todo el equipo en la investigación, diseño y programación.</p>
+            </div>
+        </div>
+
+        <div class="credits">
+            <h3 style="color: var(--gold); margin-bottom: 1rem;">👥 Créditos del Equipo</h3>
+            <p><strong>Investigación Histórica:</strong> [elias gael martinez garcia]</p>
+            <p><strong>Diseño Gráfico y Multimedia:</strong> [josue romero rodriguez]</p>
+            
+            <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted);">*Este museo virtual fue elaborado como producto integrador para la Actividad 19. Evaluado mediante rúbrica de coevaluación.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>Museo de Raíces Vivas de México &copy; 2026 | Historia de México | Independencia y Consolidación</p>
+    </footer>
+
+    <script>
+        function openSala(salaId, btn) {
+            // Ocultar todas las salas
+            const salas = document.querySelectorAll('.sala');
+            salas.forEach(sala => sala.classList.remove('active'));
+
+            // Desactivar todos los botones
+            const botones = document.querySelectorAll('.nav-btn');
+            botones.forEach(boton => boton.classList.remove('active'));
+
+            // Mostrar la sala seleccionada y activar el botón
+            document.getElementById(salaId).classList.add('active');
+            btn.classList.add('active');
+
+            // Scroll suave hacia arriba
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Animación de aparición para las tarjetas al hacer scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
